@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "E:/Academica/Faculdade/Graduação/Desenvolvimento Full Stack/Atividades/Projeto Final/Etapa 02 - Codigo/DevFullstack/./frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "E:/Academica/Faculdade/Graduação/Desenvolvimento Full Stack/Atividades/Projeto Final/Etapa 02 - Codigo/DevFullstack/./frontend/generated/jar-resources",
+  "staticOutput": "E:/Academica/Faculdade/Graduação/Desenvolvimento Full Stack/Atividades/Projeto Final/Etapa 02 - Codigo/DevFullstack/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "E:\\Academica\\Faculdade\\Graduação\\Desenvolvimento Full Stack\\Atividades\\Projeto Final\\Etapa 02 - Codigo\\DevFullstack\\target\\classes\\META-INF\\VAADIN\\config",
+  "frontendBundleOutput": "E:\\Academica\\Faculdade\\Graduação\\Desenvolvimento Full Stack\\Atividades\\Projeto Final\\Etapa 02 - Codigo\\DevFullstack\\target\\classes\\META-INF\\VAADIN\\webapp",
+  "devBundleOutput": "E:/Academica/Faculdade/Graduação/Desenvolvimento Full Stack/Atividades/Projeto Final/Etapa 02 - Codigo/DevFullstack/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "E:/Academica/Faculdade/Graduação/Desenvolvimento Full Stack/Atividades/Projeto Final/Etapa 02 - Codigo/DevFullstack/src/main/dev-bundle/config",
+  "jarResourcesFolder": "E:/Academica/Faculdade/Graduação/Desenvolvimento Full Stack/Atividades/Projeto Final/Etapa 02 - Codigo/DevFullstack/./frontend/generated/jar-resources",
+  "themeName": "",
+  "clientServiceWorkerSource": "E:\\Academica\\Faculdade\\Graduação\\Desenvolvimento Full Stack\\Atividades\\Projeto Final\\Etapa 02 - Codigo\\DevFullstack\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}

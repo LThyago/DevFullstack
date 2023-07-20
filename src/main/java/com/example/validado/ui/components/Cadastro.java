@@ -1,6 +1,5 @@
-package com.example.validado.ui;
+package com.example.validado.ui.components;
 
-import com.example.validado.backend.cadastro.Cadastro;
 import com.example.validado.backend.cadastro.CadastroService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -14,13 +13,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 
-@Route("cadastro")
-@AnonymousAllowed
-public class CadastroView extends Div {
+public class Cadastro extends Div {
 
 
     private final CadastroService cadastroService;
@@ -31,7 +26,7 @@ public class CadastroView extends Div {
     private PasswordField senha;
     private PasswordField confirmeSenha;
 
-    public CadastroView(CadastroService cadastroService) {
+    public Cadastro(CadastroService cadastroService) {
         this.cadastroService = cadastroService;
 
         setSizeFull();
@@ -117,13 +112,13 @@ public class CadastroView extends Div {
                 boolean emailExistente = cadastroService.existsByEmail(emailValue);
 
                 if (!usuarioExistente && !emailExistente) {
-                    Cadastro cadastro = new Cadastro();
+                    com.example.validado.backend.cadastro.Cadastro cadastro = new com.example.validado.backend.cadastro.Cadastro();
                     cadastro.setNome(nomeValue);
                     cadastro.setUser(usuarioValue);
                     cadastro.setEmail(emailValue);
                     cadastro.setSenha(senhaValue);
 
-                    Cadastro savedCadastro = cadastroService.add(cadastro);
+                    com.example.validado.backend.cadastro.Cadastro savedCadastro = cadastroService.add(cadastro);
 
                     if (savedCadastro != null) {
                         Notification.show("Usuário registrado com sucesso!", 3000, Notification.Position.MIDDLE);
