@@ -54,11 +54,14 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
 
     private HorizontalLayout getLoginRegistro(){
         
-        //RouterLink botaoLogin = new RouterLink("Login", LoginView.class);
-        //RouterLink botaoRegistro = new RouterLink("Registrar-se", CadastroView.class);
-        
         Button botaoLogin = new Button("Login");
+        botaoLogin.addClickListener(e -> {
+            UI.getCurrent().navigate("login");
+        });
         Button botaoRegistro = new Button("Registrar-se");
+        botaoRegistro.addClickListener(e -> {
+            UI.getCurrent().navigate("cadastro");
+        });
         botaoLogin.addClassName("botao-login");
         botaoLogin.getStyle()
             .set("background-color", "#EBEBEB")
