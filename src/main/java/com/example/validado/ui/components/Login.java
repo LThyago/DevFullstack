@@ -10,6 +10,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.router.Route;
+
 
 public class Login extends Div {
 
@@ -69,7 +71,7 @@ public class Login extends Div {
 
     private HorizontalLayout getAjuda(){
         Text textoAjuda = new Text("Não possui uma conta?");
-        Anchor linkRegistro = new Anchor("LINK_TELA_REGISTRO", "Crie uma conta nova");
+        Anchor linkRegistro = new Anchor("cadastro", "Crie uma conta nova");
         HorizontalLayout layoutTextoAjuda = new HorizontalLayout(textoAjuda, linkRegistro);
         this.textoAjuda = layoutTextoAjuda;
         return this.textoAjuda;
