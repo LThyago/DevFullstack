@@ -1,18 +1,23 @@
 package com.example.validado.ui.components;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import lombok.Data;
 
-
+@Data
 public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
 
     private Image logo;
     private HorizontalLayout barraPesquisa;
     private HorizontalLayout loginRegistro;
+    private Button loginButton;
+    private Button registroButton;
+    private Icon botaoPesquisa;
 
     public CabecalhoUsuarioDeslogado(){
         add(getLogo(), getBarraPesquisa(), getLoginRegistro());
@@ -38,30 +43,19 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
         Icon botaoPesquisa = new Icon(VaadinIcon.SEARCH);
         botaoPesquisa.getStyle().set("cursor", "pointer");
         campoBusca.setSuffixComponent(botaoPesquisa);
-        botaoPesquisa.addClickListener(
-                event -> {
-                    String termoBusca = campoBusca.getValue();
-                }
-        );
         HorizontalLayout layoutBusca = new HorizontalLayout(campoBusca);
         layoutBusca.setWidthFull();
         layoutBusca.setAlignItems(Alignment.CENTER);
         layoutBusca.setJustifyContentMode(JustifyContentMode.CENTER);
+        this.botaoPesquisa = botaoPesquisa;
         this.barraPesquisa = layoutBusca;
 
         return this.barraPesquisa;
     }
 
     private HorizontalLayout getLoginRegistro(){
-        
         Button botaoLogin = new Button("Login");
-        botaoLogin.addClickListener(e -> {
-            UI.getCurrent().navigate("login");
-        });
         Button botaoRegistro = new Button("Registrar-se");
-        botaoRegistro.addClickListener(e -> {
-            UI.getCurrent().navigate("cadastro");
-        });
         botaoLogin.addClassName("botao-login");
         botaoLogin.getStyle()
             .set("background-color", "#EBEBEB")
@@ -81,7 +75,8 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
 
         HorizontalLayout layoutLoginRegistro = new HorizontalLayout(botaoLogin, botaoRegistro);
         layoutLoginRegistro.setSpacing(false);
-
+        this.loginButton = botaoLogin;
+        this.registroButton = botaoRegistro;
         this.loginRegistro = layoutLoginRegistro;
 
         return this.loginRegistro;
