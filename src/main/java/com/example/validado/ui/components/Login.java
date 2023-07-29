@@ -6,6 +6,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
@@ -24,11 +25,23 @@ public class Login extends Div {
 
     public Login(){
         setSizeFull();
+        getStyle().set("background-color", "rgba(0, 0, 0, 0.5)")
+                .set("position", "absolute")
+                .set("top", "0")
+                .set("left", "0")
+                .set("display", "flex")
+                .set("justify-content", "center")
+                .set("align-items", "center");
         add(getFormularioLogin());
     }
 
     private VerticalLayout getFormularioLogin(){
-        VerticalLayout formularioLogin = new VerticalLayout(getLogo(), getCampoLogin(), getTextoEsqueciSenha(), getCampoSenha(), getBotaoLogin(), getAjuda());
+        VerticalLayout formularioLogin = new VerticalLayout(getLogo(), getCampoLogin(), getCampoSenha(), getBotaoLogin(), getAjuda(), getTextoEsqueciSenha());
+        formularioLogin.getStyle().set("background-color", "#FFFFFF");
+        formularioLogin.setWidth("557px");
+        formularioLogin.setHeight("758px");
+        formularioLogin.setAlignItems(FlexComponent.Alignment.CENTER);
+        formularioLogin.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         this.formularioLogin = formularioLogin;
         return this.formularioLogin;
     }
@@ -43,6 +56,7 @@ public class Login extends Div {
 
     private EmailField getCampoLogin(){
         EmailField campoLogin = new EmailField("Email");
+        campoLogin.setWidthFull();
         this.campoLogin = campoLogin;
         return this.campoLogin;
     }
@@ -55,6 +69,7 @@ public class Login extends Div {
 
     private PasswordField getCampoSenha(){
         PasswordField campoSenha = new PasswordField("Senha");
+        campoSenha.setWidthFull();
         this.campoSenha = campoSenha;
         return this.campoSenha;
     }
@@ -63,6 +78,7 @@ public class Login extends Div {
         Button botaoLogin = new Button("Login");
         botaoLogin.getStyle().set("background-color", "#4200FF")
                 .set("color", "#FFFFFF");
+        botaoLogin.setWidthFull();
         this.botaoLogin = botaoLogin;
         return this.botaoLogin;
     }

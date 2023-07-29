@@ -15,7 +15,6 @@ public class TelaInicial extends VerticalLayout {
     CabecalhoUsuarioDeslogado cabecalhoUsuarioDeslogado;
     CabecalhoUsuarioLogado cabecalhoUsuarioLogado;
     CorpoTelaInicial corpoTelaInicial;
-    Login layoutLogin;
     boolean usuarioLogado = false;
 
     public TelaInicial(){
@@ -26,21 +25,9 @@ public class TelaInicial extends VerticalLayout {
         }else{
             this.cabecalhoUsuarioDeslogado = new CabecalhoUsuarioDeslogado();
             add(cabecalhoUsuarioDeslogado, corpoTelaInicial);
-            setComportamentoLogin();
         }
         setHeightFull();
         getStyle().set("border", "none");
         getStyle().set("padding", "0");
-    }
-
-    private void setComportamentoLogin(){
-        this.cabecalhoUsuarioDeslogado.getLoginButton().addClickListener(click -> {
-            this.layoutLogin = new Login();
-            add(this.layoutLogin);
-        });
-        this.cabecalhoUsuarioDeslogado.getBotaoPesquisa().addClickListener(click -> {
-            this.layoutLogin = new Login();
-            add(this.layoutLogin);
-        });
     }
 }

@@ -1,5 +1,6 @@
 package com.example.validado.ui.components;
 
+import com.example.validado.ui.TelaInicial;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
@@ -64,6 +65,10 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
             .set("box-shadow", "0px 4px 8px rgba(0, 0, 0, 0.1)")
             .set("margin", "10px")
             .set("color", "#000000");
+        botaoLogin.addClickListener(click -> {
+            //O elemento abaixo é o que chama o componente de Login. Não iremos utilizar por enquanto. A Brenda está fazendo um baseado em Dialog.
+            //UI.getCurrent().add(new Login());
+        });
         botaoRegistro.addClassName("botao-login");
         botaoRegistro.getStyle()
             .set("background-color", "#B76CBE")
