@@ -1,8 +1,8 @@
 package com.example.validado.ui.components;
 
-import com.example.validado.ui.TelaInicial;
-import com.vaadin.flow.component.UI;
+import com.example.validado.backend.cadastro.CadastroService;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -13,6 +13,8 @@ import lombok.Data;
 @Data
 public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
 
+    private final CadastroService cadastroService;
+
     private Image logo;
     private HorizontalLayout barraPesquisa;
     private HorizontalLayout loginRegistro;
@@ -20,7 +22,9 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
     private Button registroButton;
     private Icon botaoPesquisa;
 
-    public CabecalhoUsuarioDeslogado(){
+
+    public CabecalhoUsuarioDeslogado(CadastroService cadastroService){
+        this.cadastroService = cadastroService;
         add(getLogo(), getBarraPesquisa(), getLoginRegistro());
         setJustifyContentMode(JustifyContentMode.BETWEEN);
         setAlignItems(Alignment.CENTER);
@@ -56,6 +60,7 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
 
     private HorizontalLayout getLoginRegistro(){
         Button botaoLogin = new Button("Login");
+
         Button botaoRegistro = new Button("Registrar-se");
         botaoLogin.addClassName("botao-login");
         botaoLogin.getStyle()
@@ -65,10 +70,6 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
             .set("box-shadow", "0px 4px 8px rgba(0, 0, 0, 0.1)")
             .set("margin", "10px")
             .set("color", "#000000");
-        botaoLogin.addClickListener(click -> {
-            //O elemento abaixo é o que chama o componente de Login. Não iremos utilizar por enquanto. A Brenda está fazendo um baseado em Dialog.
-            //UI.getCurrent().add(new Login());
-        });
         botaoRegistro.addClassName("botao-login");
         botaoRegistro.getStyle()
             .set("background-color", "#B76CBE")
@@ -78,6 +79,16 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
             .set("margin", "10px")
             .set("color", "#FFFFFF");
 
+        // Criar o diálogo para o formulário de login
+        Dialog dialogLogin = new Dialog();
+        dialogLogin.add(new Login());
+        botaoLogin.addClickListener(event -> dialogLogin.open());
+
+        Dialog dialogCadastro = new Dialog();
+        dialogCadastro.add(new Cadastro(cadastroService));
+        botaoRegistro.addClickListener(event -> dialogCadastro.open());
+
+
         HorizontalLayout layoutLoginRegistro = new HorizontalLayout(botaoLogin, botaoRegistro);
         layoutLoginRegistro.setSpacing(false);
         this.loginButton = botaoLogin;
@@ -86,4 +97,5 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
 
         return this.loginRegistro;
     }
+
 }
