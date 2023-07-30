@@ -1,6 +1,9 @@
 package com.example.validado.ui.components;
 
-import com.example.validado.backend.cadastro.CadastroService;
+import com.example.validado.backend.cadastro.AuthService;
+import com.example.validado.backend.cadastro.UserService;
+import com.example.validado.ui.TelaInicial;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
@@ -9,11 +12,13 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 @Data
+
 public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
 
-    private final CadastroService cadastroService;
+    private final UserService userService;
 
     private Image logo;
     private HorizontalLayout barraPesquisa;
@@ -21,10 +26,11 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
     private Button loginButton;
     private Button registroButton;
     private Icon botaoPesquisa;
+    private AuthService authService;
 
 
-    public CabecalhoUsuarioDeslogado(CadastroService cadastroService){
-        this.cadastroService = cadastroService;
+    public CabecalhoUsuarioDeslogado(UserService userService){
+        this.userService = userService;
         add(getLogo(), getBarraPesquisa(), getLoginRegistro());
         setJustifyContentMode(JustifyContentMode.BETWEEN);
         setAlignItems(Alignment.CENTER);
@@ -60,7 +66,6 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
 
     private HorizontalLayout getLoginRegistro(){
         Button botaoLogin = new Button("Login");
-
         Button botaoRegistro = new Button("Registrar-se");
         botaoLogin.addClassName("botao-login");
         botaoLogin.getStyle()
@@ -80,12 +85,12 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
             .set("color", "#FFFFFF");
 
         // Criar o diálogo para o formulário de login
-        Dialog dialogLogin = new Dialog();
-        dialogLogin.add(new Login());
-        botaoLogin.addClickListener(event -> dialogLogin.open());
-
+        /*Dialog dialogLogin = new Dialog();
+        dialogLogin.add(new LoginView(authService));
+        botaoLogin.addClickListener(event -> dialogLogin.open());*/
+        botaoLogin.addClickListener(event -> UI.getCurrent().navigate("login"));
         Dialog dialogCadastro = new Dialog();
-        dialogCadastro.add(new Cadastro(cadastroService));
+        dialogCadastro.add(new Cadastro(authService));
         botaoRegistro.addClickListener(event -> dialogCadastro.open());
 
 

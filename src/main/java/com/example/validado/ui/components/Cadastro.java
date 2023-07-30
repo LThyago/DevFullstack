@@ -1,7 +1,10 @@
 package com.example.validado.ui.components;
 
-import com.example.validado.backend.cadastro.CadastroService;
-import com.vaadin.flow.component.UI;
+import com.example.validado.backend.cadastro.AuthService;
+import com.example.validado.backend.cadastro.Role;
+import com.example.validado.backend.cadastro.UserService;
+import com.example.validado.backend.cadastro.User;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.html.Div;
@@ -12,14 +15,17 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.router.Route;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 
+@Route("cadastro")
 public class Cadastro extends Div {
 
 
-    private final CadastroService cadastroService;
+    private UserService userService;
+    private AuthService authService;
 
     private TextField nome;
     private TextField usuario;
@@ -27,11 +33,11 @@ public class Cadastro extends Div {
     private PasswordField senha;
     private PasswordField confirmeSenha;
 
-    public Cadastro(CadastroService cadastroService) {
-        this.cadastroService = cadastroService;
+
+    public  Cadastro(AuthService authService) {
+        this.authService = authService;
 
         setSizeFull();
-
 
         Div div = new Div();
         div.getStyle().set("background-color", "#e8e3e3"); // Define a cor de fundo branca
@@ -66,10 +72,13 @@ public class Cadastro extends Div {
 
         Button save = new Button("Registrar-se");
 
-        Anchor linkCadastro = new Anchor("login");
-        linkCadastro.setText("Já possui cadastro? Faça login aqui");
+        Dialog dialogLogin = new Dialog();
+        dialogLogin.add(new LoginView(authService));
 
-        HorizontalLayout linksLayout = new HorizontalLayout(linkCadastro, save);
+        Button botaoLinkLogin = new Button("Já possui cadastro? Faça login aqui");
+        botaoLinkLogin.addClickListener(event -> dialogLogin.open());
+
+        HorizontalLayout linksLayout = new HorizontalLayout(botaoLinkLogin, save);
         linksLayout.setWidth("100%"); // Define a largura total do save
         linksLayout.getStyle().set("justify-content", "space-between");
         linksLayout.getStyle().set("margin-top", "15px");
@@ -90,8 +99,8 @@ public class Cadastro extends Div {
         senha.getStyle().set("font-size", "12px");
         confirmeSenha.getStyle().set("font-size", "12px");
         //link
-        linkCadastro.getStyle().set("font-size", "12px");
-        linkCadastro.getStyle().set("margin-top", "15px");// tentando alinhar com o botao
+        botaoLinkLogin.getStyle().set("font-size", "12px");
+        botaoLinkLogin.getStyle().set("margin-top", "15px");// tentando alinhar com o botao
         //botão
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.getStyle().set("font-size", "12px");
@@ -109,22 +118,30 @@ public class Cadastro extends Div {
                 String emailValue = email.getValue();
 
                 // Verificar se já existe um usuário com o mesmo nome de usuário ou email
-                boolean usuarioExistente = cadastroService.existsByUser(usuarioValue);
-                boolean emailExistente = cadastroService.existsByEmail(emailValue);
+                boolean usuarioExistente = userService.existsByUser(usuarioValue);
+                boolean emailExistente = userService.existsByEmail(emailValue);
 
                 if (!usuarioExistente && !emailExistente) {
-                    com.example.validado.backend.cadastro.Cadastro cadastro = new com.example.validado.backend.cadastro.Cadastro();
-                    cadastro.setNome(nomeValue);
-                    cadastro.setUser(usuarioValue);
-                    cadastro.setEmail(emailValue);
-                    cadastro.setSenha(senhaValue);
+                    // Gera um novo valor aleatório para o sal
+                    String passwordSalt = RandomStringUtils.random(32);
 
-                    com.example.validado.backend.cadastro.Cadastro savedCadastro = cadastroService.add(cadastro);
+                    // Gera o hash da senha usando o sal gerado aleatoriamente
+                    String passwordHash = DigestUtils.sha1Hex(senhaValue + passwordSalt);
+
+                    // Cria o objeto User e define os valores dos campos
+                    User cadastro = new User();
+                    cadastro.setNome(nomeValue);
+                    cadastro.setUsername(usuarioValue);
+                    cadastro.setEmail(emailValue);
+                    cadastro.setPasswordSalt(passwordSalt);
+                    cadastro.setPasswordHash(passwordHash);
+                    cadastro.setRole(Role.USER);
+                    User savedCadastro = userService.add(cadastro);
 
                     if (savedCadastro != null) {
                         Notification.show("Usuário registrado com sucesso!", 3000, Notification.Position.MIDDLE);
                         //clearForm();
-                        UI.getCurrent().navigate("login");
+                        authService.register(usuarioValue, senhaValue);
                     } else {
                         Notification.show("Erro ao registrar o usuário", 3000, Notification.Position.MIDDLE);
                     }

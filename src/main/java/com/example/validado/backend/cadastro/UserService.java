@@ -1,43 +1,47 @@
 package com.example.validado.backend.cadastro;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.vaadin.crudui.crud.CrudListener;
 import java.util.Collection;
 
-@Service
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
 
-public class CadastroService implements CrudListener<Cadastro> {
-    private final CadastroRepository repository;
+public class UserService implements CrudListener<User> {
+    private final UserRepository repository;
 
     @Override
-    public Collection<Cadastro> findAll() {
+    public Collection<User> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Cadastro add(Cadastro cadastro) {
+    public User add(User cadastro) {
+        cadastro.setRole(Role.USER);
+
         return repository.save(cadastro);
     }
 
     @Override
-    public Cadastro update(Cadastro cadastro) {
+    public User update(User cadastro) {
         return repository.save(cadastro);
     }
 
     @Override
-    public void delete(Cadastro cadastro) {
-          repository.delete(cadastro);
+    public void delete(User cadastro) {
+        repository.delete(cadastro);
 
     }
 
     public boolean existsByUser(String user) {
-        return repository.existsByUser(user);
+        return repository.existsByUsername(user);
     }
 
     public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
     }
 
+    public User findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
 }
