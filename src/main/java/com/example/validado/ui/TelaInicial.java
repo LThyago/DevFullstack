@@ -12,10 +12,10 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Validado")
 public class TelaInicial extends VerticalLayout {
 
-    CabecalhoUsuarioDeslogado cabecalhoUsuarioDeslogado;
-    CabecalhoUsuarioLogado cabecalhoUsuarioLogado;
-    CorpoTelaInicial corpoTelaInicial;
-    boolean usuarioLogado = false;
+    private CabecalhoUsuarioDeslogado cabecalhoUsuarioDeslogado;
+    private CabecalhoUsuarioLogado cabecalhoUsuarioLogado;
+    private CorpoTelaInicial corpoTelaInicial;
+    private boolean usuarioLogado = false;
 
     public TelaInicial(){
         this.corpoTelaInicial = new CorpoTelaInicial();
