@@ -90,7 +90,7 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
         botaoLogin.addClickListener(event -> dialogLogin.open());*/
         botaoLogin.addClickListener(event -> UI.getCurrent().navigate("login"));
         Dialog dialogCadastro = new Dialog();
-        dialogCadastro.add(new Cadastro(authService));
+        dialogCadastro.add(new Cadastro(authService, userService));
         botaoRegistro.addClickListener(event -> dialogCadastro.open());
 
 

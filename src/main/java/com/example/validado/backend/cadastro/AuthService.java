@@ -52,17 +52,17 @@ public class AuthService {
             routes.add(new AuthorizedRoute("home", "Home", TelaInicial.class));
             //routes.add(new AuthorizedRoute("logout", "Logout", LogoutView.class));
 
-        } /*else if (role.equals(Role.ADMIN)) {
-            routes.add(new AuthorizedRoute("home", "Home", HomeView.class));
+        } else if (role.equals(Role.EMPRESA)) {
+            /*routes.add(new AuthorizedRoute("home", "Home", HomeView.class));
             routes.add(new AuthorizedRoute("admin", "Admin", AdminView.class));
             routes.add(new AuthorizedRoute("logout", "Logout", LogoutView.class));
-        }*/
+        */}
 
         return routes;
     }
 
-    public void register(String email, String password) {
-        User user = userRepository.save(new User(email, password, Role.USER));
+    public void register(String email, String password, Role role) {
+        User user = userRepository.save(new User(email, password, role));
     }
 
     /*public void activate(String activationCode) throws AuthException {

@@ -17,7 +17,7 @@ public class UserService implements CrudListener<User> {
 
     @Override
     public User add(User cadastro) {
-        cadastro.setRole(Role.USER);
+
 
         return repository.save(cadastro);
     }

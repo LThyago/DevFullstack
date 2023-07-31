@@ -36,7 +36,7 @@ public class User {
 
         this.username = username;
 
-        this.role = Role.USER;
+        this.role = role;
 
         this.passwordSalt = RandomStringUtils.random(32);
 

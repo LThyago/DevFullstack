@@ -10,6 +10,7 @@ import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -18,6 +19,9 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.router.Route;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.Text;
+
 
 
 @Route("cadastro")
@@ -33,8 +37,10 @@ public class Cadastro extends Div {
     private PasswordField senha;
     private PasswordField confirmeSenha;
 
+    private Select<String> objetivoSelect;
+    private Text objetivoLabel;
 
-    public  Cadastro(AuthService authService) {
+    public  Cadastro(AuthService authService, UserService userService) {
         this.authService = authService;
 
         setSizeFull();
@@ -47,7 +53,7 @@ public class Cadastro extends Div {
         div.getStyle().set("left", "50%"); // Define a posição horizontalmente no centro
         div.getStyle().set("transform", "translate(-50%, -50%)"); // Centraliza a div
         div.setWidth("450px"); // Define a largura
-        div.setHeight("500px"); // Define a altura
+        //div.setHeight("500px"); // Define a altura
 
         nome = new TextField("Nome");
         nome.setPlaceholder("Digite seu nome");
@@ -69,6 +75,13 @@ public class Cadastro extends Div {
         senha.setErrorMessage("Senha Inválida");
 
         confirmeSenha = new PasswordField("Confirme a senha");
+        //Objetivo
+        Div objetivoLabel = new Div();
+        objetivoLabel.add(new Text("Qual o seu objetivo?"));
+        objetivoSelect = new Select<>();
+        objetivoSelect.setItems("Estou procurando serviço", "Estou oferecendo serviços");
+        objetivoSelect.setPlaceholder("Selecione uma opção");
+        objetivoSelect.setRequiredIndicatorVisible(true);
 
         Button save = new Button("Registrar-se");
 
@@ -85,7 +98,8 @@ public class Cadastro extends Div {
         FormLayout formLayout = new FormLayout();
         formLayout.add(nome, usuario, email, senha, confirmeSenha);
         formLayout.setResponsiveSteps(new ResponsiveStep("0", 1));
-
+        VerticalLayout objetivoLayout = new VerticalLayout(objetivoLabel,objetivoSelect);
+        formLayout.add(objetivoLayout);
         formLayout.add(linksLayout);
 
         div.add(formLayout);
@@ -93,20 +107,24 @@ public class Cadastro extends Div {
 
         //Styles:
 
-        nome.getStyle().set("font-size", "12px");
-        usuario.getStyle().set("font-size", "12px");
-        email.getStyle().set("font-size", "12px");
-        senha.getStyle().set("font-size", "12px");
-        confirmeSenha.getStyle().set("font-size", "12px");
+        nome.getStyle().set("font-size", "14px");
+        usuario.getStyle().set("font-size", "14px");
+        email.getStyle().set("font-size", "14px");
+        senha.getStyle().set("font-size", "14px");
+        confirmeSenha.getStyle().set("font-size", "14px");
         //link
-        botaoLinkLogin.getStyle().set("font-size", "12px");
+        botaoLinkLogin.getStyle().set("font-size", "14px");
         botaoLinkLogin.getStyle().set("margin-top", "15px");// tentando alinhar com o botao
         //botão
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.getStyle().set("font-size", "12px");
         save.addThemeVariants(ButtonVariant.LUMO_SMALL);
         save.setAutofocus(true);
-
+        //Select
+        objetivoSelect.setWidthFull();
+        objetivoLayout.getStyle().set("padding","0")
+                .set("margin-top", "15px")
+                .set("font-weight", "bold");
         //
         save.addClickListener(event -> {
             String senhaValue = senha.getValue();
@@ -117,7 +135,7 @@ public class Cadastro extends Div {
                 String usuarioValue = usuario.getValue();
                 String emailValue = email.getValue();
 
-                // Verificar se já existe um usuário com o mesmo nome de usuário ou email
+                // Verifica se já existe um usuário com o mesmo nome de usuário ou email
                 boolean usuarioExistente = userService.existsByUser(usuarioValue);
                 boolean emailExistente = userService.existsByEmail(emailValue);
 
@@ -135,13 +153,27 @@ public class Cadastro extends Div {
                     cadastro.setEmail(emailValue);
                     cadastro.setPasswordSalt(passwordSalt);
                     cadastro.setPasswordHash(passwordHash);
-                    cadastro.setRole(Role.USER);
+
+                    if (objetivoSelect.getValue() != null) {
+                        String objetivoSelecionado = objetivoSelect.getValue();
+
+                        if ("Estou procurando serviço".equals(objetivoSelecionado)) {
+                            cadastro.setRole(Role.USER);
+                        } else if ("Estou oferecendo serviços".equals(objetivoSelecionado)) {
+                            cadastro.setRole(Role.EMPRESA);
+                        } else {
+                            Notification.show("VALOR INESPERADO");
+                        }
+                    } else {
+                        Notification.show("Por favor selecione um objetivo");
+                    }
+
                     User savedCadastro = userService.add(cadastro);
 
                     if (savedCadastro != null) {
                         Notification.show("Usuário registrado com sucesso!", 3000, Notification.Position.MIDDLE);
-                        //clearForm();
-                        authService.register(usuarioValue, senhaValue);
+                        clearForm();
+                        authService.register(usuarioValue, senhaValue, cadastro.getRole());
                     } else {
                         Notification.show("Erro ao registrar o usuário", 3000, Notification.Position.MIDDLE);
                     }

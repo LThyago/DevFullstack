@@ -1,17 +1,17 @@
 package com.example.validado.backend.cadastro;
 
 public enum Role {
+        USER("Usuário"),
+        EMPRESA("Empresa");
 
-        USER, EMPRESA
+        private final String displayName;
 
-        /*private final String value;
-
-        Role(String value) {
-            this.value = value;
+        Role(String displayName) {
+                this.displayName = displayName;
         }
 
-        public String getValue() {
-            return value;
-        }*/
+        public String getDisplayName() {
+                return displayName;
+        }
 }
 
