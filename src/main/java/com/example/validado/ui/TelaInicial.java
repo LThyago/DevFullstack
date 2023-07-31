@@ -16,10 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PageTitle("Validado")
 public class TelaInicial extends VerticalLayout {
 
-    CabecalhoUsuarioDeslogado cabecalhoUsuarioDeslogado;
-    CabecalhoUsuarioLogado cabecalhoUsuarioLogado;
-    CorpoTelaInicial corpoTelaInicial;
-    boolean usuarioLogado = false;
+    private CabecalhoUsuarioDeslogado cabecalhoUsuarioDeslogado;
+    private CabecalhoUsuarioLogado cabecalhoUsuarioLogado;
+    private CorpoTelaInicial corpoTelaInicial;
+    private boolean usuarioLogado = false;
 
     private UserService cadastroService;
 
