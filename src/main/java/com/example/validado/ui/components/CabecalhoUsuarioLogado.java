@@ -72,7 +72,6 @@ public class CabecalhoUsuarioLogado extends HorizontalLayout{
         dropdownEmpresa.addValueChangeListener(event -> {
             if("Logout".equals(event.getValue())) {
                 openLogoutDialog();
-                // reset the value to "Nome da Empresa" if logout cancelled
                 dropdownEmpresa.setValue(nomeUsuario);
             }
         });
