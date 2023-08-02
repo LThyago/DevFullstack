@@ -1,13 +1,19 @@
 package com.example.validado.ui.components;
 
+import com.example.validado.ui.TelaInicial;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
 
 public class CabecalhoUsuarioLogado extends HorizontalLayout{
     private Image logo;
@@ -58,9 +64,17 @@ public class CabecalhoUsuarioLogado extends HorizontalLayout{
         botaoPublicar.addClickListener(e -> {
             UI.getCurrent().navigate("publicar");
         });
-        Button botaoNomeEmpresa = new Button("Nome da Empresa");
-        botaoNomeEmpresa.addClickListener(e -> {
-            UI.getCurrent().navigate("Nome da Empresa");
+        ComboBox<String> dropdownEmpresa = new ComboBox<>();
+        String nomeUsuario = (String) VaadinSession.getCurrent().getAttribute("nomeUsuario");
+        dropdownEmpresa.setItems(nomeUsuario, "Perfil", "Logout");
+        dropdownEmpresa.setValue(nomeUsuario);
+
+        dropdownEmpresa.addValueChangeListener(event -> {
+            if("Logout".equals(event.getValue())) {
+                openLogoutDialog();
+                // reset the value to "Nome da Empresa" if logout cancelled
+                dropdownEmpresa.setValue(nomeUsuario);
+            }
         });
         botaoPublicar.addClassName("botao-publicar");
         botaoPublicar.getStyle()
@@ -70,20 +84,42 @@ public class CabecalhoUsuarioLogado extends HorizontalLayout{
                 .set("box-shadow", "0px 4px 8px rgba(0, 0, 0, 0.1)")
                 .set("margin", "10px")
                 .set("color", "#FFFFFF");
-        botaoNomeEmpresa.addClassName("botao-nome-usuario");
-        botaoNomeEmpresa.getStyle()
+        dropdownEmpresa.getElement().getStyle()
                 .set("background-color", "#FFFFFF")
-                .set("border-radius", "50px")
-                .set("padding", "15px 30px")
-                .set("box-shadow", "0px 4px 8px rgba(0, 0, 0, 0.1)")
-                .set("margin", "10px")
-                .set("color", "#5533FF");
-
-        HorizontalLayout layoutFerramentasUsuario = new HorizontalLayout(botaoPublicar, botaoNomeEmpresa);
+                .set("color", "#5048E5")
+                .set("border-radius", "50px");
+        dropdownEmpresa.setWidth("auto");
+        HorizontalLayout layoutFerramentasUsuario = new HorizontalLayout(botaoPublicar, dropdownEmpresa);
+        layoutFerramentasUsuario.setAlignItems(FlexComponent.Alignment.CENTER);
         layoutFerramentasUsuario.setSpacing(false);
 
         this.ferramentasUsuario = layoutFerramentasUsuario;
 
         return this.ferramentasUsuario;
+    }
+
+    private void openLogoutDialog() {
+        Dialog confirmDialog = new Dialog();
+
+        Text messageText = new Text("Você realmente quer sair?");
+        Button confirmButton = new Button("Sim", event -> logout());
+        Button cancelButton = new Button("Não", event -> confirmDialog.close());
+
+        confirmDialog.add(new VerticalLayout(messageText, new HorizontalLayout(confirmButton, cancelButton)));
+        confirmDialog.open();
+    }
+
+    private void logout() {
+        VaadinSession.getCurrent().getSession().invalidate();
+        UI.getCurrent().getPage().setLocation("/");
+
+        TelaInicial telaInicial = (TelaInicial) UI.getCurrent().getChildren()
+                .filter(component -> component instanceof TelaInicial)
+                .findFirst()
+                .orElse(null);
+
+        if (telaInicial != null) {
+            telaInicial.updateHeader(false);
+        }
     }
 }
