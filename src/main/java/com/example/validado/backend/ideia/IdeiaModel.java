@@ -1,6 +1,6 @@
 package com.example.validado.backend.ideia;
 
-import com.example.validado.backend.cadastro.Cadastro;
+//import com.example.validado.backend.cadastro.Cadastro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,9 +17,9 @@ public class IdeiaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @Column(name = "id_usuario")
-    private Cadastro usuario;
+    //@ManyToOne
+    //@Column(name = "id_usuario")
+    //private Cadastro usuario;
     @Column(name = "titulo")
     private String titulo;
     @Column(name = "descricao")
