@@ -1,6 +1,7 @@
 package com.example.validado.ui;
 
 import com.example.validado.backend.cadastro.UserService;
+import com.example.validado.backend.ideia.IdeiaService;
 import com.example.validado.ui.components.CabecalhoUsuarioDeslogado;
 import com.example.validado.ui.components.CabecalhoUsuarioLogado;
 import com.example.validado.ui.components.CorpoCriacaoIdeia;
@@ -22,40 +23,19 @@ public class TelaCriacaoIdeia extends VerticalLayout {
     private boolean usuarioLogado = false;
 
     private UserService cadastroService;
+    private IdeiaService ideiaService;
 
     @Autowired
-       public TelaCriacaoIdeia(UserService cadastroService){
+       public TelaCriacaoIdeia(UserService cadastroService, IdeiaService ideiaService){
         this.cadastroService = cadastroService;
-        this.corpoCriacaoIdeia = new CorpoCriacaoIdeia();
+        this.corpoCriacaoIdeia = new CorpoCriacaoIdeia(ideiaService);
+        this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
+        add(cabecalhoUsuarioLogado, corpoCriacaoIdeia);
 
-        if (usuarioLogado) {
-            this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
-
-                UI.getCurrent().navigate("");
-                add(cabecalhoUsuarioLogado, corpoCriacaoIdeia);
-            } else {
-
-            this.cabecalhoUsuarioDeslogado = new CabecalhoUsuarioDeslogado(cadastroService);
-
-            add(cabecalhoUsuarioDeslogado, corpoCriacaoIdeia);
-        }
         setHeightFull();
         getStyle().set("border", "none");
         getStyle().set("padding", "0");
     }
 
-
-    public void updateHeader(boolean usuarioLogado) {
-        this.removeAll(); // Remove todos os componentes existentes na tela
-        this.usuarioLogado = usuarioLogado; // Atualiza o estado do usuário logado
-
-        if (usuarioLogado) {
-            this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
-            add(cabecalhoUsuarioLogado, corpoCriacaoIdeia);
-        } else {
-            this.cabecalhoUsuarioDeslogado = new CabecalhoUsuarioDeslogado(cadastroService);
-            add(cabecalhoUsuarioDeslogado, corpoCriacaoIdeia);
-        }
-    }
 }
 

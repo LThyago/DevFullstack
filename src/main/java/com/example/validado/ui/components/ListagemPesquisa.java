@@ -12,11 +12,11 @@ import java.util.List;
 public class ListagemPesquisa extends VerticalLayout {
 
     private Grid<IdeiaGridDTO> grid = new Grid<>(IdeiaGridDTO.class);
-    @Autowired
     private IdeiaService ideiaService;
     private VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService;
 
-    public ListagemPesquisa(){
+    public ListagemPesquisa(IdeiaService ideiaService){
+        this.ideiaService = ideiaService;
         setSizeFull();
         configureGrid();
         add(this.grid);

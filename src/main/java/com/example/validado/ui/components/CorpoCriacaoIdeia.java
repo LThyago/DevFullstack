@@ -1,5 +1,7 @@
 package com.example.validado.ui.components;
 
+import com.example.validado.backend.cadastro.User;
+import com.example.validado.backend.ideia.IdeiaService;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -8,8 +10,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import com.vaadin.flow.theme.lumo.LumoUtility.Padding;
+
+import java.util.Objects;
 
 
 public class CorpoCriacaoIdeia extends VerticalLayout {
@@ -21,7 +26,6 @@ public class CorpoCriacaoIdeia extends VerticalLayout {
     private HorizontalLayout layoutRow2 = new HorizontalLayout();
     private VerticalLayout layoutColumn3 = new VerticalLayout();
     private TextField textField = new TextField();
-    private TextField textField2 = new TextField();
     private VerticalLayout layoutColumn4 = new VerticalLayout();
     private Avatar avatar = new Avatar();
     private Hr hr = new Hr();
@@ -37,7 +41,7 @@ public class CorpoCriacaoIdeia extends VerticalLayout {
     private VerticalLayout layoutColumn5 = new VerticalLayout();
     private HorizontalLayout layoutRow8 = new HorizontalLayout();
 
-    public CorpoCriacaoIdeia(){
+    public CorpoCriacaoIdeia(IdeiaService ideiaService){
         setWidthFull();
         layoutRow.setWidthFull();
         setFlexGrow(1.0, layoutRow);
@@ -52,8 +56,6 @@ public class CorpoCriacaoIdeia extends VerticalLayout {
         layoutColumn3.setWidth(null);
         textField.setLabel("Nome da ideia");
         textField.setWidthFull();
-        textField2.setLabel("Resumo da ideia");
-        textField2.setWidthFull();
         layoutColumn4.addClassName(Padding.XLARGE);
         layoutColumn4.setWidth(null);
         avatar.setName("Firstname Lastname");
@@ -88,7 +90,6 @@ public class CorpoCriacaoIdeia extends VerticalLayout {
         layoutColumn2.add(layoutRow2);
         layoutRow2.add(layoutColumn3);
         layoutColumn3.add(textField);
-        layoutColumn3.add(textField2);
         layoutRow2.add(layoutColumn4);
         layoutColumn4.add(avatar);
         layoutColumn2.add(hr);
@@ -103,5 +104,13 @@ public class CorpoCriacaoIdeia extends VerticalLayout {
         layoutRow5.add(buttonSecondary);
         layoutRow.add(layoutColumn5);
         layoutColumn5.add(layoutRow8);
+
+        buttonPrimary.addClickListener(click -> {
+            if(Objects.nonNull(textField.getValue())
+                    && Objects.nonNull(textArea.getValue())){
+                ideiaService.criarIdeia(textField.getValue(), textArea.getValue(),
+                        VaadinSession.getCurrent().getAttribute(User.class));
+            }
+        });
     }
 }

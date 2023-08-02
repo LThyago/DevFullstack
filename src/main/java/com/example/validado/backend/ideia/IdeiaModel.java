@@ -1,25 +1,26 @@
 package com.example.validado.backend.ideia;
 
-//import com.example.validado.backend.cadastro.Cadastro;
+import com.example.validado.backend.cadastro.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "ideia")
 public class IdeiaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@ManyToOne
-    //@Column(name = "id_usuario")
-    //private Cadastro usuario;
+    @Column(name = "id_usuario")
+    private Long idUsuario;
     @Column(name = "titulo")
     private String titulo;
     @Column(name = "descricao")
@@ -27,7 +28,7 @@ public class IdeiaModel {
     @Column(name = "deletado")
     private boolean deletado;
     @Column(name = "data_criacao")
-    private LocalTime dataCriacao;
+    private LocalDateTime dataCriacao;
     @Column(name = "data_atualizacao")
-    private LocalTime dataAtualizacao;
+    private LocalDateTime dataAtualizacao;
 }
