@@ -23,13 +23,13 @@ Para rodar este projeto localmente, siga os seguintes passos:
 
 3. Atualize as propriedades de conexão com o banco de dados em `application.properties`:
 
-```properties
+~~~properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
 spring.datasource.username=postgres
 spring.datasource.password=postgres
 spring.jpa.hibernate.ddl-auto=update
 vaadin.whitelisted-packages=com.example.validado,com.vaadin,org.vaadin,com.example.application
-ˋˋˋ
+~~~
 4. Abra o projeto no seu IDE favorito (recomendamos o IntelliJ IDEA).
 
 5. Certifique-se de que as dependências Maven estão corretamente configuradas e instaladas.
