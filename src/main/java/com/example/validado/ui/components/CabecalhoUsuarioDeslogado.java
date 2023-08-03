@@ -28,7 +28,6 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
     private Icon botaoPesquisa;
     private AuthService authService;
 
-
     public CabecalhoUsuarioDeslogado(UserService userService){
         this.userService = userService;
         add(getLogo(), getBarraPesquisa(), getLoginRegistro());
@@ -53,6 +52,7 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
         campoBusca.setWidth("50%");
         Icon botaoPesquisa = new Icon(VaadinIcon.SEARCH);
         botaoPesquisa.getStyle().set("cursor", "pointer");
+        botaoPesquisa.addClickListener(click -> UI.getCurrent().navigate("login"));
         campoBusca.setSuffixComponent(botaoPesquisa);
         HorizontalLayout layoutBusca = new HorizontalLayout(campoBusca);
         layoutBusca.setWidthFull();

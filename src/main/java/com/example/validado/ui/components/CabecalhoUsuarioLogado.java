@@ -1,5 +1,8 @@
 package com.example.validado.ui.components;
 
+import com.example.validado.ui.TelaBusca;
+import com.example.validado.ui.events.BuscaEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
@@ -8,6 +11,8 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.page.Page;
+import com.vaadin.flow.shared.Registration;
 
 public class CabecalhoUsuarioLogado extends HorizontalLayout{
     private Image logo;
@@ -41,6 +46,10 @@ public class CabecalhoUsuarioLogado extends HorizontalLayout{
         botaoPesquisa.addClickListener(
                 event -> {
                     String termoBusca = campoBusca.getValue();
+                    if(!UI.getCurrent().equals(TelaBusca.class)){
+                        UI.getCurrent().navigate("pesquisar");
+                    }
+                    fireEvent(new BuscaEvent(this, true, termoBusca));
                 }
         );
         HorizontalLayout layoutBusca = new HorizontalLayout(campoBusca);
@@ -56,7 +65,7 @@ public class CabecalhoUsuarioLogado extends HorizontalLayout{
 
         Button botaoPublicar = new Button("Publicar");
         botaoPublicar.addClickListener(e -> {
-            UI.getCurrent().navigate("publicar");
+            UI.getCurrent().navigate("criar-ideia");
         });
         Button botaoNomeEmpresa = new Button("Nome da Empresa");
         botaoNomeEmpresa.addClickListener(e -> {
@@ -85,5 +94,9 @@ public class CabecalhoUsuarioLogado extends HorizontalLayout{
         this.ferramentasUsuario = layoutFerramentasUsuario;
 
         return this.ferramentasUsuario;
+    }
+
+    public Registration addBuscaListener(ComponentEventListener<BuscaEvent> listener) {
+        return addListener(BuscaEvent.class, listener);
     }
 }
