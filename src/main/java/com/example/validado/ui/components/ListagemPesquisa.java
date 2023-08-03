@@ -36,7 +36,7 @@ public class ListagemPesquisa extends VerticalLayout {
         grid.setSelectionMode(Grid.SelectionMode.NONE);
         grid.setHeight("500px");
         grid.addItemClickListener(click -> {
-
+            
         });
     }
 
