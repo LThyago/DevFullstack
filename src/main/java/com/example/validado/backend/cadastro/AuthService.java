@@ -29,7 +29,7 @@ public class AuthService {
     }
 
     public void authenticate(String username, String password) throws AuthException {
-        User user = userRepository.getByUsername(username);
+        User user = userRepository.getFirstByUsername(username);
         if (user != null && user.checkPassword(password)) {
             VaadinSession.getCurrent().setAttribute(User.class, user);
             createRoutes(user.getRole());

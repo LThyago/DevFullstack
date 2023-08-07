@@ -76,6 +76,7 @@ public class LoginView extends VerticalLayout {
         ;
         //botaoLogin.setWidthFull();
 
+
         add(getFormularioLogin());
         add(botaoLogin);
     }
