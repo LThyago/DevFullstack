@@ -21,6 +21,10 @@ public class IdeiaService {
         return repository.encontrarIdeiasGrid(termoBusca);
     }
 
+    public IdeiaGridDTO recuperarIdeiasPorId(String id){
+        return repository.encontrarIdeiasGridPorId(Long.parseLong(id)).orElse(null);
+    }
+
     public void criarIdeia(String nomeIdeia, String descricaoIdeia, User usuario){
         IdeiaModel ideia = IdeiaModel.builder()
                 .idUsuario(usuario.getId())

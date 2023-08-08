@@ -22,7 +22,6 @@ public class CorpoVisualizacaoIdeia extends VerticalLayout {
     private HorizontalLayout layoutRow2 = new HorizontalLayout();
     private VerticalLayout layoutColumn3 = new VerticalLayout();
     private H3 h3 = new H3();
-    private Paragraph textSmall = new Paragraph();
     private VerticalLayout layoutColumn4 = new VerticalLayout();
     private Avatar avatar = new Avatar();
     private Hr hr = new Hr();
@@ -50,27 +49,18 @@ public class CorpoVisualizacaoIdeia extends VerticalLayout {
         layoutRow2.setFlexGrow(1.0, layoutColumn3);
         layoutColumn3.setHeightFull();
         layoutColumn3.setWidth(null);
-        h3.setText("Gadget para Facilitar a Limpeza de Espaços pequenos");
-        textSmall.setText(
-                "Gostaria de um Gadget que facilitasse o dia a dia na limpeza de espaços muito pequenos de forma precisa.");
-        textSmall.getStyle().set("font-size", "var(--lumo-font-size-xs)");
         layoutColumn4.addClassName(Padding.XLARGE);
         layoutColumn4.setWidth(null);
-        avatar.setName("Firstname Lastname");
         layoutRow3.setWidthFull();
         layoutRow3.addClassName(Gap.MEDIUM);
         layoutColumn2.setFlexGrow(1.0, layoutRow3);
-        textSmall2.setText(
-                "Gostaria de um Gadget que facilitasse o dia a dia na limpeza de espaços muito pequenos de forma precisa. Precisa ser um Gadget fácil de limpar, para que sua reutilização seja prática.");
         textSmall2.getStyle().set("font-size", "var(--lumo-font-size-xs)");
         layoutColumn5.addClassName(Padding.SMALL);
         layoutColumn5.setWidth(null);
         layoutRow4.addClassName(Gap.MEDIUM);
         layoutRow4.addClassName(Padding.SMALL);
         icon.getElement().setAttribute("icon", "lumo:user");
-        textMedium.setText("5.0");
         textMedium.getStyle().set("font-size", "var(--lumo-font-size-m)");
-        textMedium2.setText("318 Upvotes");
         textMedium2.getStyle().set("font-size", "var(--lumo-font-size-m)");
         buttonPrimary.setText("Selecionar Ideia");
         buttonPrimary.setWidthFull();
@@ -80,7 +70,6 @@ public class CorpoVisualizacaoIdeia extends VerticalLayout {
         layoutColumn2.add(layoutRow2);
         layoutRow2.add(layoutColumn3);
         layoutColumn3.add(h3);
-        layoutColumn3.add(textSmall);
         layoutRow2.add(layoutColumn4);
         layoutColumn4.add(avatar);
         layoutColumn2.add(hr);
@@ -93,5 +82,14 @@ public class CorpoVisualizacaoIdeia extends VerticalLayout {
         layoutRow4.add(textMedium2);
         layoutColumn5.add(buttonPrimary);
         layoutColumn5.add(hr2);
+    }
+
+    public void popularTelaIdeia(String titulo, String descricao, String upvotes, String classificacao,
+    String nomeUsuario){
+        h3.setText(titulo);
+        textSmall2.setText(descricao);
+        textMedium2.setText(upvotes + " Upvotes");
+        textMedium.setText(classificacao + ".0");
+        avatar.setName(nomeUsuario);
     }
 }

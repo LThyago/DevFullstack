@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Route("pesquisar")
-public class TelaBusca extends VerticalLayout{
+public class TelaBusca extends VerticalLayout implements BeforeEnterObserver{
 
     private CabecalhoUsuarioLogado cabecalhoUsuarioLogado;
     private ListagemPesquisa listaPesquisa;
@@ -24,9 +25,16 @@ public class TelaBusca extends VerticalLayout{
         this.ideiaService = ideiaService;
         this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
         this.listaPesquisa = new ListagemPesquisa(ideiaService);
-        cabecalhoUsuarioLogado.addBuscaListener(event -> {
-            listaPesquisa.atualizarGrid(event.getTermoBusca());
-        });
         add(cabecalhoUsuarioLogado, listaPesquisa);
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent){
+        QueryParameters queryParameters = beforeEnterEvent.getLocation().getQueryParameters();
+        List<String> termosBusca = queryParameters.getParameters().get("termoBusca");
+        if(Objects.nonNull(termosBusca) && !termosBusca.isEmpty()){
+            this.termoBusca = termosBusca.get(0);
+        }
+        listaPesquisa.atualizarGrid(this.termoBusca);
     }
 }

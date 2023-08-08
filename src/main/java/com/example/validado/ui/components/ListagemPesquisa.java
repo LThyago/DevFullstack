@@ -3,6 +3,7 @@ package com.example.validado.ui.components;
 import com.example.validado.backend.ideia.IdeiaGridDTO;
 import com.example.validado.backend.ideia.IdeiaService;
 import com.example.validado.backend.vinculoupvoteideia.VinculoUpvoteIdeiaService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import lombok.Setter;
@@ -36,7 +37,7 @@ public class ListagemPesquisa extends VerticalLayout {
         grid.setSelectionMode(Grid.SelectionMode.NONE);
         grid.setHeight("500px");
         grid.addItemClickListener(click -> {
-            
+            UI.getCurrent().navigate("ideia?id="+click.getItem().getId());
         });
     }
 
