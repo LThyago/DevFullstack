@@ -1,11 +1,18 @@
 package com.example.validado.ui.components;
 
+import com.example.validado.backend.cadastro.User;
+import com.example.validado.backend.cadastro.UserService;
 import com.example.validado.backend.ideia.IdeiaGridDTO;
 import com.example.validado.backend.ideia.IdeiaService;
 import com.example.validado.backend.vinculoupvoteideia.VinculoUpvoteIdeiaService;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.server.VaadinSession;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +28,8 @@ public class ListagemPesquisa extends VerticalLayout {
     private String termoBusca;
     private List<IdeiaGridDTO> ideias;
 
-    public ListagemPesquisa(IdeiaService ideiaService){
+    public ListagemPesquisa(IdeiaService ideiaService, VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService){
+        this.vinculoUpvoteIdeiaService = vinculoUpvoteIdeiaService;
         this.ideiaService = ideiaService;
         this.ideias = getIdeias();
         configureGrid();
@@ -30,14 +38,30 @@ public class ListagemPesquisa extends VerticalLayout {
     }
 
     private void configureGrid() {
+        grid.removeAllColumns();
         grid.addColumn(IdeiaGridDTO::getNomeUsuario).setHeader("Nome");
         grid.addColumn(IdeiaGridDTO::getTitulo).setHeader("Título");
         grid.addColumn(IdeiaGridDTO::getDescricao).setHeader("Descrição");
         grid.addColumn(IdeiaGridDTO::getUpvotes).setHeader("Upvotes");
-        grid.setSelectionMode(Grid.SelectionMode.NONE);
+        grid.addComponentColumn(ideia -> {
+            Icon heartIcon = VaadinIcon.HEART.create();
+            if(vinculoUpvoteIdeiaService.usuarioCurtiuIdeia(VaadinSession.getCurrent()
+                    .getAttribute(User.class).getId(), ideia.getId())){
+                heartIcon.setColor("purple");
+            }
+            heartIcon.addClickListener(click -> {
+                vinculoUpvoteIdeiaService.salvarUpvote(VaadinSession.getCurrent()
+                        .getAttribute(User.class).getId(), ideia.getId());
+            });
+            return heartIcon;
+        });
+        grid.setSelectionMode(Grid.SelectionMode.SINGLE);
         grid.setHeight("500px");
         grid.addItemClickListener(click -> {
+            vinculoUpvoteIdeiaService.salvarAcessoIdeia(VaadinSession.getCurrent()
+                    .getAttribute(User.class).getId(), click.getItem().getId());
             UI.getCurrent().navigate("ideia?id="+click.getItem().getId());
+
         });
     }
 

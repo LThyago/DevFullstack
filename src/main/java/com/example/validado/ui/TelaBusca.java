@@ -1,6 +1,9 @@
 package com.example.validado.ui;
 
+import com.example.validado.backend.cadastro.UserService;
 import com.example.validado.backend.ideia.IdeiaService;
+import com.example.validado.backend.vinculoupvoteideia.VinculoUpvoteIdeiaModel;
+import com.example.validado.backend.vinculoupvoteideia.VinculoUpvoteIdeiaService;
 import com.example.validado.ui.components.CabecalhoUsuarioLogado;
 import com.example.validado.ui.components.ListagemPesquisa;
 import com.vaadin.flow.component.UI;
@@ -18,13 +21,16 @@ public class TelaBusca extends VerticalLayout implements BeforeEnterObserver{
     private CabecalhoUsuarioLogado cabecalhoUsuarioLogado;
     private ListagemPesquisa listaPesquisa;
     private IdeiaService ideiaService;
+    private VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService;
     private String termoBusca;
 
     @Autowired
-    public TelaBusca(IdeiaService ideiaService){
+    public TelaBusca(IdeiaService ideiaService, VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService,
+                     UserService userService){
+        this.vinculoUpvoteIdeiaService = vinculoUpvoteIdeiaService;
         this.ideiaService = ideiaService;
         this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
-        this.listaPesquisa = new ListagemPesquisa(ideiaService);
+        this.listaPesquisa = new ListagemPesquisa(ideiaService, vinculoUpvoteIdeiaService);
         add(cabecalhoUsuarioLogado, listaPesquisa);
     }
 

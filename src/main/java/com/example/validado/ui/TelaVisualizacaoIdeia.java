@@ -33,18 +33,9 @@ public class TelaVisualizacaoIdeia extends VerticalLayout implements BeforeEnter
         this.cadastroService = cadastroService;
         this.ideiaService = ideiaService;
         this.corpoVisualizacaoIdeia = new CorpoVisualizacaoIdeia();
+        this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
+        add(cabecalhoUsuarioLogado, corpoVisualizacaoIdeia);
 
-        if (usuarioLogado) {
-            this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
-
-                UI.getCurrent().navigate("");
-                add(cabecalhoUsuarioLogado, corpoVisualizacaoIdeia);
-            } else {
-
-            this.cabecalhoUsuarioDeslogado = new CabecalhoUsuarioDeslogado(cadastroService);
-
-
-        }
         setHeightFull();
         getStyle().set("border", "none");
         getStyle().set("padding", "0");
