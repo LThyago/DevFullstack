@@ -12,12 +12,13 @@ import com.vaadin.flow.component.UI;
 //import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Objects;
 //import com.vaadin.flow.server.VaadinSession;
-
+@RolesAllowed({"EMPRESA", "USER"})
 @Route(value = "ideia")
 @PageTitle("Validado")
 public class TelaVisualizacaoIdeia extends VerticalLayout implements BeforeEnterObserver {

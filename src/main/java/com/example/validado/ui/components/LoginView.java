@@ -18,7 +18,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
+import jakarta.annotation.security.PermitAll;
 
+@PermitAll
 @Route("login")
 @PageTitle("Login")
 public class LoginView extends VerticalLayout {
@@ -61,7 +63,7 @@ public class LoginView extends VerticalLayout {
     }
 
     private VerticalLayout getFormularioLogin() {
-        VerticalLayout formularioLogin = new VerticalLayout(new Component[]{this.getLogo(), this.getCampoLogin(), this.getCampoSenha(), this.getAjuda(), this.getTextoEsqueciSenha()});
+        VerticalLayout formularioLogin = new VerticalLayout(new Component[]{this.getLogo(), this.getCampoLogin(), this.getCampoSenha(), this.getAjuda()});
         formularioLogin.getStyle().set("background-color", "#FFFFFF");
         formularioLogin.setWidth("557px");
         formularioLogin.setHeight("758px");
@@ -86,12 +88,6 @@ public class LoginView extends VerticalLayout {
         return this.campoLogin;
     }
 
-    private Anchor getTextoEsqueciSenha() {
-        Anchor esqueciSenha = new Anchor("<LINK_ESQUECI_SENHA>", "Esqueceu a Senha?");
-        this.textoEsqueciSenha = esqueciSenha;
-        return this.textoEsqueciSenha;
-    }
-
     private PasswordField getCampoSenha() {
         PasswordField campoSenha = new PasswordField("Senha");
         campoSenha.setWidthFull();
@@ -101,7 +97,7 @@ public class LoginView extends VerticalLayout {
 
     private HorizontalLayout getAjuda() {
         Text textoAjuda = new Text("Não possui uma conta?");
-        Anchor linkRegistro = new Anchor("cadastro", "Crie uma conta nova");
+        Anchor linkRegistro = new Anchor("", "Crie uma conta nova");
         HorizontalLayout layoutTextoAjuda = new HorizontalLayout(new Component[]{textoAjuda, linkRegistro});
         this.textoAjuda = layoutTextoAjuda;
         return this.textoAjuda;

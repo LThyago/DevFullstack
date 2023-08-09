@@ -10,4 +10,7 @@ public interface VinculoEmpresaIdeiaRepository extends JpaRepository<VinculoEmpr
 
     Optional<VinculoEmpresaIdeiaModel> findFirstByIdIdeiaAndIdUsuarioAndDeletadoIsFalse(@Param("idIdeia") Long idIdeia,
                                                                             @Param("idUsuario") Long idUsuario);
+
+    Optional<VinculoEmpresaIdeiaModel> findFirstByIdIdeiaAndIdUsuario(@Param("idIdeia") Long idIdeia,
+                                                                      @Param("idUsuario") Long idUsuario);
 }

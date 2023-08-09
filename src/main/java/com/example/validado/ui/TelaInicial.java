@@ -13,9 +13,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 //import com.vaadin.flow.server.VaadinSession;
 
+@PermitAll
 @Route(value = "")
 @PageTitle("Validado")
 public class TelaInicial extends VerticalLayout {

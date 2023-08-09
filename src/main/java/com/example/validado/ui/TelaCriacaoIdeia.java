@@ -10,9 +10,11 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 //import com.vaadin.flow.server.VaadinSession;
 
+@RolesAllowed({"EMPRESA", "USER"})
 @Route(value = "criar-ideia")
 @PageTitle("Validado")
 public class TelaCriacaoIdeia extends VerticalLayout {

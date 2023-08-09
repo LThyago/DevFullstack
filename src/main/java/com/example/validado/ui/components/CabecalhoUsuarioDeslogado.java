@@ -84,13 +84,9 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
             .set("margin", "10px")
             .set("color", "#FFFFFF");
 
-        // Criar o diálogo para o formulário de login
-        /*Dialog dialogLogin = new Dialog();
-        dialogLogin.add(new LoginView(authService));
-        botaoLogin.addClickListener(event -> dialogLogin.open());*/
         botaoLogin.addClickListener(event -> UI.getCurrent().navigate("login"));
         Dialog dialogCadastro = new Dialog();
-        dialogCadastro.add(new Cadastro(authService, userService));
+        dialogCadastro.add(new Cadastro(authService, userService, dialogCadastro));
         botaoRegistro.addClickListener(event -> dialogCadastro.open());
 
 

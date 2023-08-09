@@ -4,6 +4,7 @@ import com.example.validado.backend.cadastro.AuthService;
 import com.example.validado.backend.cadastro.Role;
 import com.example.validado.backend.cadastro.UserService;
 import com.example.validado.backend.cadastro.User;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
@@ -17,13 +18,14 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.PermitAll;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.Text;
+import org.springframework.beans.factory.annotation.Autowired;
 
-
-
+@PermitAll
 @Route("cadastro")
 public class Cadastro extends Div {
 
@@ -40,7 +42,8 @@ public class Cadastro extends Div {
     private Select<String> objetivoSelect;
     private Text objetivoLabel;
 
-    public  Cadastro(AuthService authService, UserService userService) {
+    @Autowired
+    public  Cadastro(AuthService authService, UserService userService, Dialog dialogCadastro) {
         this.authService = authService;
 
         setSizeFull();
@@ -85,11 +88,11 @@ public class Cadastro extends Div {
 
         Button save = new Button("Registrar-se");
 
-        Dialog dialogLogin = new Dialog();
-        dialogLogin.add(new LoginView(authService));
-
         Button botaoLinkLogin = new Button("Já possui cadastro? Faça login aqui");
-        botaoLinkLogin.addClickListener(event -> dialogLogin.open());
+        botaoLinkLogin.addClickListener(event -> {
+            dialogCadastro.close();
+            UI.getCurrent().navigate("login");
+        });
 
         HorizontalLayout linksLayout = new HorizontalLayout(botaoLinkLogin, save);
         linksLayout.setWidth("100%"); // Define a largura total do save
@@ -173,7 +176,6 @@ public class Cadastro extends Div {
                     if (savedCadastro != null) {
                         Notification.show("Usuário registrado com sucesso!", 3000, Notification.Position.MIDDLE);
                         clearForm();
-                        authService.register(usuarioValue, senhaValue, cadastro.getRole());
                     } else {
                         Notification.show("Erro ao registrar o usuário", 3000, Notification.Position.MIDDLE);
                     }

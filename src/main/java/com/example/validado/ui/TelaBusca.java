@@ -9,12 +9,14 @@ import com.example.validado.ui.components.ListagemPesquisa;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@RolesAllowed({"EMPRESA", "USER"})
 @Route("pesquisar")
 public class TelaBusca extends VerticalLayout implements BeforeEnterObserver{
 

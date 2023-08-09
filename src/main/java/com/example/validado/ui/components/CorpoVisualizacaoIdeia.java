@@ -4,6 +4,7 @@ import com.example.validado.backend.cadastro.Role;
 import com.example.validado.backend.cadastro.User;
 import com.example.validado.backend.vinculoempresaideia.VinculoEmpresaIdeiaService;
 import com.example.validado.backend.vinculoupvoteideia.VinculoUpvoteIdeiaService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -99,24 +100,33 @@ public class CorpoVisualizacaoIdeia extends VerticalLayout {
         avatar.setName(nomeUsuario);
 
         if(VaadinSession.getCurrent().getAttribute(User.class).getRole().equals(Role.EMPRESA)) {
-            if(!vinculoEmpresaIdeiaService.verificaIdeiaVinculadaEmpresa(idIdeia)) {
+            boolean ideiaVinculadaEmpresa =
+                    vinculoEmpresaIdeiaService.verificaIdeiaVinculadaEmpresa(idIdeia);
+            if(!ideiaVinculadaEmpresa) {
                 buttonPrimary.setText("Selecionar Ideia");
                 buttonPrimary.setWidthFull();
                 buttonPrimary.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
                 buttonPrimary.addClickListener(click -> {
-                    vinculoEmpresaIdeiaService.vincular(idIdeia, VaadinSession.getCurrent()
-                            .getAttribute(User.class).getId());
+                    if(!ideiaVinculadaEmpresa) {
+                        vinculoEmpresaIdeiaService.vincular(idIdeia, VaadinSession.getCurrent()
+                                .getAttribute(User.class).getId());
+                        UI.getCurrent().getPage().reload();
+                    }
                 });
             }else{
-                if(vinculoEmpresaIdeiaService
+                boolean empresaAtualVinculadaIdeia = vinculoEmpresaIdeiaService
                         .verificaRelacaoEmpresaIdeia(idIdeia, VaadinSession.getCurrent()
-                                .getAttribute(User.class).getId())){
+                                .getAttribute(User.class).getId());
+                if(empresaAtualVinculadaIdeia){
                     buttonPrimary.setText("Cancelar Seleção");
                     buttonPrimary.setWidthFull();
                     buttonPrimary.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
                     buttonPrimary.addClickListener(click -> {
-                        vinculoEmpresaIdeiaService.desvincular(idIdeia, VaadinSession.getCurrent()
-                                .getAttribute(User.class).getId());
+                        if(empresaAtualVinculadaIdeia) {
+                            vinculoEmpresaIdeiaService.desvincular(idIdeia, VaadinSession.getCurrent()
+                                    .getAttribute(User.class).getId());
+                            UI.getCurrent().getPage().reload();
+                        }
                     });
                 }else{
                     buttonPrimary.setText("Ideia já selecionada");
