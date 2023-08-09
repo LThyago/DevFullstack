@@ -2,6 +2,7 @@ package com.example.validado.ui.components;
 
 import com.example.validado.backend.cadastro.User;
 import com.example.validado.backend.ideia.IdeiaService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -111,6 +112,10 @@ public class CorpoCriacaoIdeia extends VerticalLayout {
                 ideiaService.criarIdeia(textField.getValue(), textArea.getValue(),
                         VaadinSession.getCurrent().getAttribute(User.class));
             }
+            UI.getCurrent().navigate("");
+        });
+        buttonSecondary.addClickListener(click -> {
+           UI.getCurrent().navigate("");
         });
     }
 }

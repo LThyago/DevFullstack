@@ -79,7 +79,7 @@ public class VinculoUpvoteIdeiaService {
     public Long getQuantidadeEstrelasIdeia(Long idIdeia){
         Long qtdVisualizacoes = vinculoUpvoteIdeiaRepository.findQuantidadeVisualizacoesIdeia(idIdeia);
         Long qtdCurtidas = vinculoUpvoteIdeiaRepository.findQuantidadeCurtidasIdeia(idIdeia);
-        if(qtdVisualizacoes.equals(0)){
+        if(qtdVisualizacoes.equals(0L)){
             return 0L;
         }
 
