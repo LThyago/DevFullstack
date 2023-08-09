@@ -9,22 +9,32 @@ import java.util.Optional;
 
 public interface IdeiaRepository extends JpaRepository<IdeiaModel, Long> {
     @Query(value = " SELECT i.id, u.nome AS nomeUsuario, i.titulo AS titulo, i.descricao AS descricao, " +
-            " COUNT(v.id) AS upvotes " +
+            " (SELECT COUNT(*) FROM vinculo_upvote_usuarios_ideias v WHERE v.id_ideia = i.id " +
+            " AND v.deletado = false AND v.usuario_curtiu = true) AS upvotes " +
             " FROM ideia i " +
             " INNER JOIN usuarios u ON u.id = i.id_usuario " +
-            " LEFT JOIN vinculo_upvote_usuarios_ideias v ON v.id_usuario = u.id " +
             " WHERE i.descricao ILIKE %:termoBusca% OR i.titulo ILIKE %:termoBusca% " +
-            " GROUP BY u.nome, i.titulo, i.descricao, v.id, i.data_atualizacao, i.id " +
+            " GROUP BY u.nome, i.titulo, i.descricao, i.data_atualizacao, i.id " +
             " ORDER BY i.data_atualizacao ", nativeQuery = true)
     List<IdeiaGridDTO> encontrarIdeiasGrid(@Param("termoBusca") String termoBusca);
 
     @Query(value = " SELECT i.id, u.nome AS nomeUsuario, i.titulo AS titulo, i.descricao AS descricao, " +
-            " COUNT(v.id) AS upvotes " +
+            " (SELECT COUNT(*) FROM vinculo_upvote_usuarios_ideias v WHERE v.id_ideia = i.id " +
+            " AND v.deletado = false AND v.usuario_curtiu = true) AS upvotes " +
             " FROM ideia i " +
             " INNER JOIN usuarios u ON u.id = i.id_usuario " +
-            " LEFT JOIN vinculo_upvote_usuarios_ideias v ON v.id_usuario = u.id " +
             " WHERE i.id = :idIdeia " +
-            " GROUP BY u.nome, i.titulo, i.descricao, v.id, i.data_atualizacao, i.id " +
+            " GROUP BY u.nome, i.titulo, i.descricao, i.data_atualizacao, i.id " +
             " ORDER BY i.data_atualizacao ", nativeQuery = true)
     Optional<IdeiaGridDTO> encontrarIdeiasGridPorId(@Param("idIdeia") Long idIdeia);
+
+    @Query(value = " SELECT i.id, u.nome AS nomeUsuario, i.titulo AS titulo, i.descricao AS descricao, " +
+            " (SELECT COUNT(*) FROM vinculo_upvote_usuarios_ideias v WHERE v.id_ideia = i.id " +
+            " AND v.deletado = false AND v.usuario_curtiu = true) AS upvotes " +
+            " FROM ideia i " +
+            " INNER JOIN usuarios u ON u.id = i.id_usuario " +
+            " GROUP BY u.nome, i.titulo, i.descricao, i.data_atualizacao, i.id " +
+            " ORDER BY upvotes " +
+            " LIMIT 5 ", nativeQuery = true)
+    List<IdeiaGridDTO> encontrarTopIdeias();
 }

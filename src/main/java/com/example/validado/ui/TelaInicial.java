@@ -2,6 +2,8 @@ package com.example.validado.ui;
 
 import com.example.validado.backend.cadastro.User;
 import com.example.validado.backend.cadastro.UserService;
+import com.example.validado.backend.ideia.IdeiaService;
+import com.example.validado.backend.vinculoupvoteideia.VinculoUpvoteIdeiaService;
 import com.example.validado.ui.components.CabecalhoUsuarioDeslogado;
 import com.example.validado.ui.components.CabecalhoUsuarioLogado;
 import com.example.validado.ui.components.CorpoTelaInicial;
@@ -24,11 +26,16 @@ public class TelaInicial extends VerticalLayout {
     private boolean usuarioLogado = false;
 
     private UserService cadastroService;
+    private IdeiaService ideiaService;
+    private VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService;
 
     @Autowired
-    public TelaInicial(UserService cadastroService){
+    public TelaInicial(UserService cadastroService, IdeiaService ideiaService,
+                       VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService){
+        this.vinculoUpvoteIdeiaService = vinculoUpvoteIdeiaService;
+        this.ideiaService = ideiaService;
         this.cadastroService = cadastroService;
-        this.corpoTelaInicial = new CorpoTelaInicial();
+        this.corpoTelaInicial = new CorpoTelaInicial(ideiaService, vinculoUpvoteIdeiaService);
 
         // Verifique o status do login aqui
         User user = VaadinSession.getCurrent().getAttribute(User.class);

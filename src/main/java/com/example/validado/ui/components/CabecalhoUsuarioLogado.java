@@ -67,7 +67,7 @@ public class CabecalhoUsuarioLogado extends HorizontalLayout{
         });
         ComboBox<String> dropdownEmpresa = new ComboBox<>();
         String nomeUsuario = (String) VaadinSession.getCurrent().getAttribute("nomeUsuario");
-        dropdownEmpresa.setItems(nomeUsuario, "Perfil", "Logout");
+        dropdownEmpresa.setItems(nomeUsuario, "Logout");
         dropdownEmpresa.setValue(nomeUsuario);
 
         dropdownEmpresa.addValueChangeListener(event -> {

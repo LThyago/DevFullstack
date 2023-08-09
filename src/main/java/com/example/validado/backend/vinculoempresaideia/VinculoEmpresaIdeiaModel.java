@@ -1,4 +1,4 @@
-package com.example.validado.backend.vinculoupvoteideia;
+package com.example.validado.backend.vinculoempresaideia;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-@Table(name = "vinculo_upvote_usuarios_ideias")
-public class VinculoUpvoteIdeiaModel {
+@Table(name = "vinculo_empresa_ideias")
+public class VinculoEmpresaIdeiaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,10 +22,10 @@ public class VinculoUpvoteIdeiaModel {
     private Long idUsuario;
     @Column(name = "id_ideia")
     private Long idIdeia;
+    @Column(name = "situacao_vinculo")
+    private Long situacaoVinculo;
     @Column(name = "deletado")
     private boolean deletado;
     @Column(name = "data_vinculo")
     private LocalDate dataVinculo;
-    @Column(name = "usuario_curtiu")
-    private boolean usuarioCurtiu;
 }

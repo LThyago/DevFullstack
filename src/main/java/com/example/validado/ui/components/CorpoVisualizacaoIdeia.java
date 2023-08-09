@@ -1,5 +1,9 @@
 package com.example.validado.ui.components;
 
+import com.example.validado.backend.cadastro.Role;
+import com.example.validado.backend.cadastro.User;
+import com.example.validado.backend.vinculoempresaideia.VinculoEmpresaIdeiaService;
+import com.example.validado.backend.vinculoupvoteideia.VinculoUpvoteIdeiaService;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -9,6 +13,7 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 import com.vaadin.flow.theme.lumo.LumoUtility.Padding;
 
@@ -34,6 +39,8 @@ public class CorpoVisualizacaoIdeia extends VerticalLayout {
     private Paragraph textMedium2 = new Paragraph();
     private Button buttonPrimary = new Button();
     private Hr hr2 = new Hr();
+
+    private VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService;
 
     public CorpoVisualizacaoIdeia(){
         setWidthFull();
@@ -62,9 +69,6 @@ public class CorpoVisualizacaoIdeia extends VerticalLayout {
         icon.getElement().setAttribute("icon", "lumo:user");
         textMedium.getStyle().set("font-size", "var(--lumo-font-size-m)");
         textMedium2.getStyle().set("font-size", "var(--lumo-font-size-m)");
-        buttonPrimary.setText("Selecionar Ideia");
-        buttonPrimary.setWidthFull();
-        buttonPrimary.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         add(layoutRow);
         layoutRow.add(layoutColumn2);
         layoutColumn2.add(layoutRow2);
@@ -81,15 +85,51 @@ public class CorpoVisualizacaoIdeia extends VerticalLayout {
         layoutRow4.add(textMedium);
         layoutRow4.add(textMedium2);
         layoutColumn5.add(buttonPrimary);
+
         layoutColumn5.add(hr2);
     }
 
     public void popularTelaIdeia(String titulo, String descricao, String upvotes, String classificacao,
-    String nomeUsuario){
+                                 String nomeUsuario, Long idIdeia,
+                                 VinculoEmpresaIdeiaService vinculoEmpresaIdeiaService){
         h3.setText(titulo);
         textSmall2.setText(descricao);
         textMedium2.setText(upvotes + " Upvotes");
         textMedium.setText(classificacao + ".0");
         avatar.setName(nomeUsuario);
+
+        if(VaadinSession.getCurrent().getAttribute(User.class).getRole().equals(Role.EMPRESA)) {
+            if(!vinculoEmpresaIdeiaService.verificaIdeiaVinculadaEmpresa(idIdeia)) {
+                buttonPrimary.setText("Selecionar Ideia");
+                buttonPrimary.setWidthFull();
+                buttonPrimary.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+                buttonPrimary.addClickListener(click -> {
+                    vinculoEmpresaIdeiaService.vincular(idIdeia, VaadinSession.getCurrent()
+                            .getAttribute(User.class).getId());
+                });
+            }else{
+                if(vinculoEmpresaIdeiaService
+                        .verificaRelacaoEmpresaIdeia(idIdeia, VaadinSession.getCurrent()
+                                .getAttribute(User.class).getId())){
+                    buttonPrimary.setText("Cancelar Seleção");
+                    buttonPrimary.setWidthFull();
+                    buttonPrimary.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+                    buttonPrimary.addClickListener(click -> {
+                        vinculoEmpresaIdeiaService.desvincular(idIdeia, VaadinSession.getCurrent()
+                                .getAttribute(User.class).getId());
+                    });
+                }else{
+                    buttonPrimary.setText("Ideia já selecionada");
+                    buttonPrimary.setWidthFull();
+                    buttonPrimary.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+                }
+
+            }
+        }else{
+            buttonPrimary.setText("Não disponível");
+            buttonPrimary.setWidthFull();
+            buttonPrimary.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        }
+
     }
 }

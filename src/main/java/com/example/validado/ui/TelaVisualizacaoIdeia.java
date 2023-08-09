@@ -3,6 +3,8 @@ package com.example.validado.ui;
 import com.example.validado.backend.cadastro.UserService;
 import com.example.validado.backend.ideia.IdeiaGridDTO;
 import com.example.validado.backend.ideia.IdeiaService;
+import com.example.validado.backend.vinculoempresaideia.VinculoEmpresaIdeiaService;
+import com.example.validado.backend.vinculoupvoteideia.VinculoUpvoteIdeiaService;
 import com.example.validado.ui.components.CabecalhoUsuarioDeslogado;
 import com.example.validado.ui.components.CabecalhoUsuarioLogado;
 import com.example.validado.ui.components.CorpoVisualizacaoIdeia;
@@ -27,32 +29,23 @@ public class TelaVisualizacaoIdeia extends VerticalLayout implements BeforeEnter
 
     private UserService cadastroService;
     private IdeiaService ideiaService;
+    private VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService;
+    private VinculoEmpresaIdeiaService vinculoEmpresaIdeiaService;
 
     @Autowired
-       public TelaVisualizacaoIdeia(UserService cadastroService, IdeiaService ideiaService){
+       public TelaVisualizacaoIdeia(UserService cadastroService, IdeiaService ideiaService,
+                                    VinculoUpvoteIdeiaService vinculoUpvoteIdeiaService,
+                                    VinculoEmpresaIdeiaService vinculoEmpresaIdeiaService){
+        this.vinculoEmpresaIdeiaService = vinculoEmpresaIdeiaService;
+        this.vinculoUpvoteIdeiaService = vinculoUpvoteIdeiaService;
         this.cadastroService = cadastroService;
         this.ideiaService = ideiaService;
         this.corpoVisualizacaoIdeia = new CorpoVisualizacaoIdeia();
         this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
-        add(cabecalhoUsuarioLogado, corpoVisualizacaoIdeia);
 
         setHeightFull();
         getStyle().set("border", "none");
         getStyle().set("padding", "0");
-    }
-
-
-    public void updateHeader(boolean usuarioLogado) {
-        this.removeAll(); // Remove todos os componentes existentes na tela
-        this.usuarioLogado = usuarioLogado; // Atualiza o estado do usuário logado
-
-        if (usuarioLogado) {
-            this.cabecalhoUsuarioLogado = new CabecalhoUsuarioLogado();
-            add(cabecalhoUsuarioLogado, corpoVisualizacaoIdeia);
-        } else {
-            this.cabecalhoUsuarioDeslogado = new CabecalhoUsuarioDeslogado(cadastroService);
-            add(cabecalhoUsuarioDeslogado, corpoVisualizacaoIdeia);
-        }
     }
 
     @Override
@@ -65,10 +58,12 @@ public class TelaVisualizacaoIdeia extends VerticalLayout implements BeforeEnter
             IdeiaGridDTO ideia = ideiaService.recuperarIdeiasPorId(id);
             if(Objects.nonNull(ideia)) {
                 this.corpoVisualizacaoIdeia.popularTelaIdeia(ideia.getTitulo(),
-                        ideia.getDescricao(), ideia.getUpvotes().toString(), "5", ideia.getNomeUsuario());
+                        ideia.getDescricao(), ideia.getUpvotes().toString(),
+                        vinculoUpvoteIdeiaService.getQuantidadeEstrelasIdeia(ideia.getId()).toString(),
+                        ideia.getNomeUsuario(), ideia.getId(), this.vinculoEmpresaIdeiaService);
             }
         }
-        add(cabecalhoUsuarioDeslogado, corpoVisualizacaoIdeia);
+        add(cabecalhoUsuarioLogado, corpoVisualizacaoIdeia);
     }
 }
 

@@ -36,4 +36,8 @@ public class IdeiaService {
                 .build();
         repository.save(ideia);
     }
+
+    public List<IdeiaGridDTO> encontrarMaisPopulares(){
+        return repository.encontrarTopIdeias();
+    }
 }

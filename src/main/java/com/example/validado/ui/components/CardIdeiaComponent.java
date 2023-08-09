@@ -7,7 +7,7 @@ import com.vaadin.flow.component.Text;
 
 public class CardIdeiaComponent extends VerticalLayout {
     public CardIdeiaComponent(String nomeUsuario, int quantidadeEstrelas, String texto) {
-        setWidth("20%");
+        setWidth("22%");
         setHeightFull();
         HorizontalLayout estrelasLayout = new HorizontalLayout();
 
@@ -27,5 +27,6 @@ public class CardIdeiaComponent extends VerticalLayout {
             .set("border-radius", "30px");
         setMaxWidth("209px");
         add(estrelasLayout, textoDiv, nomeUsuarioDiv);
+        setJustifyContentMode(JustifyContentMode.BETWEEN);
     }
 }
