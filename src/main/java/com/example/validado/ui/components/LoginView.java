@@ -47,6 +47,7 @@ public class LoginView extends VerticalLayout {
                 .set("height", "100%")
                 .set("position", "absolute")
                 .set("top", "0")
+                .set("z-index","9")
                 .set("left", "0");
         backgroundDiv.addClickListener(event -> {
             UI.getCurrent().navigate("");
@@ -70,14 +71,14 @@ public class LoginView extends VerticalLayout {
             }
 
         });
-        botaoLogin.getStyle().set("background-color", "#4200FF").set("color", "#FFFFFF").set("position", "absolute").set("bottom", "80px");
+        botaoLogin.getStyle().set("background-color", "#4200FF").set("color", "#FFFFFF").set("position", "absolute").set("bottom", "80px").set("z-index","10");
         this.add(new Component[]{backgroundDiv, this.getFormularioLogin()});
         this.add(new Component[]{botaoLogin});
     }
 
     private VerticalLayout getFormularioLogin() {
         VerticalLayout formularioLogin = new VerticalLayout(new Component[]{this.getLogo(), this.getCampoLogin(), this.getCampoSenha(), this.getAjuda()});
-        formularioLogin.getStyle().set("background-color", "#FFFFFF");
+        formularioLogin.getStyle().set("background-color", "#FFFFFF").set("z-index","10");
         formularioLogin.setWidth("557px");
         formularioLogin.setHeight("758px");
         formularioLogin.setAlignItems(Alignment.CENTER);

@@ -42,6 +42,9 @@ public class CabecalhoUsuarioDeslogado extends HorizontalLayout{
         String caminhoImagem = "/logo.png";
         Image logo = new Image(caminhoImagem, "Logo Validado");
         logo.setMaxWidth("80px");
+        logo.addClickListener(event -> {
+            UI.getCurrent().navigate("");
+        });
         this.logo = logo;
         return this.logo;
     }
