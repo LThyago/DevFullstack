@@ -7,6 +7,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -36,8 +37,20 @@ public class LoginView extends VerticalLayout {
     public LoginView(AuthService authService) {
         this.setId("login-view");
         this.setSizeFull();
-        this.getStyle().set("background-color", "rgba(0, 0, 0, 0.5)").set("position", "absolute").set("top", "0").set("left", "0").set("display", "flex").set("justify-content", "center").set("align-items", "center");
+        this.getStyle().set("background-image", "url('/fundo.png')")
+                .set("background-size", "cover").set("position", "absolute").set("top", "0").set("left", "0").set("display", "flex").set("justify-content", "center").set("align-items", "center");
         this.formularioLogin = this.getFormularioLogin();
+
+        Div backgroundDiv = new Div(); //div criada apenas para evento click
+        backgroundDiv.getStyle()
+                .set("width", "100%")
+                .set("height", "100%")
+                .set("position", "absolute")
+                .set("top", "0")
+                .set("left", "0");
+        backgroundDiv.addClickListener(event -> {
+            UI.getCurrent().navigate("");
+        });
         Button botaoLogin = new Button("Login", (event) -> {
             try {
                 authService.authenticate(this.campoLogin.getValue(), this.campoSenha.getValue());
@@ -58,7 +71,7 @@ public class LoginView extends VerticalLayout {
 
         });
         botaoLogin.getStyle().set("background-color", "#4200FF").set("color", "#FFFFFF").set("position", "absolute").set("bottom", "80px");
-        this.add(new Component[]{this.getFormularioLogin()});
+        this.add(new Component[]{backgroundDiv, this.getFormularioLogin()});
         this.add(new Component[]{botaoLogin});
     }
 
