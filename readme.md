@@ -34,6 +34,6 @@ vaadin.whitelisted-packages=com.example.validado,com.vaadin,org.vaadin,com.examp
 
 5. Certifique-se de que as dependências Maven estão corretamente configuradas e instaladas.
 
-6. Para iniciar o servidor, localize e execute a classe principal com o método main().
+6. Para iniciar o servidor, localize e execute a classe principal (ValidadoApplication.java) com o método main().
 
 7. A aplicação deve estar rodando no endereço http://localhost:8080/.
